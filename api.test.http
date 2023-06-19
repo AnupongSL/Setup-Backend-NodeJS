@@ -4,9 +4,111 @@
 
 @url = {{base_url}}:{{port}}
 
-@example_api = {{url}}/example
+@hr_api = {{url}}/hr
 
+@work_history_api = {{url}}/work_history
 
+@employee_api = {{url}}/employee
+
+@bearerTokenEmployee = Bearer {{loginEmployee.response.body.token}}
+
+@bearerTokenHr = Bearer {{loginHr.response.body.token}}
+//  EMPLOYEE
+###
+GET {{employee_api}}/getemployee HTTP/1.1
 
 ###
-GET {{example_api}}/example HTTP/1.1
+# @name loginEmployee
+POST {{employee_api}}/loginemployee HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "anupong",
+    "password": "11111za"
+}
+###
+POST {{employee_api}}/registeremployee HTTP/1.1
+Authorization: {{bearerTokenHr}}
+Content-Type: application/json
+
+{
+    "fullname": "อนุพงศ์ สูตรเลข",
+    "username": "anupong",
+    "password": "11111za"
+}
+
+// HR
+###
+# @name loginHr
+POST {{hr_api}}/loginhr HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "hr",
+    "password": "12345"
+}
+###
+POST {{hr_api}}/registerhr HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "hr",
+    "password": "12345"
+}
+
+// Work_History
+###
+GET {{work_history_api}}/getework_history HTTP/1.1
+Authorization: {{bearerTokenHr}}
+Content-Type: application/json
+
+{
+    "page": 1
+}
+
+###
+POST {{work_history_api}}/getwork_historybydate HTTP/1.1
+Authorization: {{bearerTokenHr}}
+Content-Type: application/json
+
+{
+    "date":"2023-06-19",
+    "page": 1
+}
+
+###
+POST {{work_history_api}}/getwork_historybyname HTTP/1.1
+Authorization: {{bearerTokenHr}}
+Content-Type: application/json
+
+{
+    "name":"อนุ",
+    "page": 1
+}
+
+###
+GET {{work_history_api}}/getwork_historybyusername HTTP/1.1
+Authorization: {{bearerTokenEmployee}}
+Content-Type: application/json
+
+{
+    "page": 1
+}
+
+###
+POST {{work_history_api}}/getwork_historybyusernameanddate HTTP/1.1
+Authorization: {{bearerTokenEmployee}}
+Content-Type: application/json
+
+{
+    "date":"2023-06-19",
+    "page": 1
+}
+
+###
+POST {{work_history_api}}/addcheckin HTTP/1.1
+Authorization: {{bearerTokenEmployee}}
+
+###
+POST {{work_history_api}}/addcheckout HTTP/1.1
+Authorization: {{bearerTokenEmployee}}
